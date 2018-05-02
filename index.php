@@ -44,28 +44,124 @@ function test_input($data) {
 }
 
 function findAndCompare($url1, $url2) {
-	
-	
-#	$url1 = 'My long <a href="http://example.com/abc" rel="link">string</a> has any
-#		<a href="/local/path" title="with attributes">number</a> of
-#		<a href="#anchor" data-attr="lots">links</a>.';
 
-#	$url1 = "https://". $url1;
- #	echo $url1;
-#	echo "<br>";
-#	echo $url2;
-#	echo "<br>----------------<br>";
+    // first website
+	$domain1 = str_replace("https://","",str_replace("http://","",$url1));
+	echo $domain1;
+	echo "<br>----------------<br>";
 
-	$url1 = file_get_contents("https://".$url1);
-	
-	$dom = new DomDocument();
-	$dom->loadHTML($url1);
-	$output = array();
-	foreach ($dom->getElementsByTagName('a') as $item) {
-	   $output[] = $item->getAttribute('href');#,
+	// retrieve the href attributes within all the anchor tags
+	$page1 = file_get_contents($url1);
+	$dom1 = new DomDocument();
+	$dom1->loadHTML($page1);
+	$output1 = array();
+	foreach ($dom1->getElementsByTagName('a') as $item) {
+	   if (substr($item->getAttribute('href'), 0, 2) == "//") { 
+			$output1[] = "http:". $item->getAttribute('href');
+		} else if (substr($item->getAttribute('href'), 0, 1) == "/") { 
+			$output1[] = $url1 . $item->getAttribute('href');
+		} else {
+		   $output1[] = $item->getAttribute('href');
+		}
 	}
-	var_dump($output);
-#	var_dump($dom);
+    #var_dump($output1);
+
+   // remove external links
+   $inboundlink1 = array();
+   foreach ($output1 as $value) {
+		if (strstr($value,$domain1)) { 
+			$inboundlink1[] = $value;
+	
+			/*
+			#######################################################################
+			Comment this code because goes in timeout: "Fatal error: Maximum execution time of 30 seconds exceeded"
+			
+			
+			// crawl the website by one level depth, and retrieve the href attributes within all the anchor tags
+			$page11 = file_get_contents($value);
+			$dom11 = new DomDocument();
+			$dom11->loadHTML($page11);
+			foreach ($dom11->getElementsByTagName('a') as $item) {
+			   if (substr($item->getAttribute('href'), 0, 2) == "//") { 
+					if (strstr($item->getAttribute('href'),$domain1)) { 
+						$inboundlink1[] = "http:". $item->getAttribute('href');
+					}
+				} else if (substr($item->getAttribute('href'), 0, 1) == "/") { 
+					$inboundlink1[] = $url1 . $item->getAttribute('href');
+				} else {
+					if (strstr($item->getAttribute('href'),$domain1)) { 
+				  		$inboundlink1[] = $item->getAttribute('href');
+					}
+				}
+			}
+	
+			#######################################################################
+			*/
+
+		}
+	}
+	var_dump($inboundlink1);
+
+
+
+	//  second website
+	$domain2 = str_replace("https://","",str_replace("http://","",$url2));
+	echo "<br>----------------<br>";
+	echo $domain2;
+	echo "<br>----------------<br>";
+
+	// retrieve the href attributes within all the anchor tags
+	$page2 = file_get_contents($url2);
+	$dom2 = new DomDocument();
+	$dom2->loadHTML($page2);
+	$output2 = array();
+	foreach ($dom2->getElementsByTagName('a') as $item) {
+	   if (substr($item->getAttribute('href'), 0, 2) == "//") { 
+			$output2[] = "http:". $item->getAttribute('href');
+		} else if (substr($item->getAttribute('href'), 0, 1) == "/") { 
+			$output2[] = $url2 . $item->getAttribute('href');
+		} else {
+		   $output2[] = $item->getAttribute('href');
+		}
+	}
+    #var_dump($output2);
+
+   // remove external links
+   $inboundlink2 = array();
+   foreach ($output2 as $value) {
+		if (strstr($value,$domain2)) { 
+			$inboundlink2[] = $value;
+	
+			/*
+			#######################################################################
+			Comment this code because goes in timeout: "Fatal error: Maximum execution time of 30 seconds exceeded"
+			
+			
+			// crawl the website by one level depth, and retrieve the href attributes within all the anchor tags
+			$page22 = file_get_contents($value);
+			$dom22 = new DomDocument();
+			$dom22->loadHTML($page22);
+			foreach ($dom22->getElementsByTagName('a') as $item) {
+			   if (substr($item->getAttribute('href'), 0, 2) == "//") { 
+					if (strstr($item->getAttribute('href'),$domain2)) { 
+						$inboundlink2[] = "http:". $item->getAttribute('href');
+					}
+				} else if (substr($item->getAttribute('href'), 0, 1) == "/") { 
+					$inboundlink2[] = $url2 . $item->getAttribute('href');
+				} else {
+					if (strstr($item->getAttribute('href'),$domain2)) { 
+				  		$inboundlink2[] = $item->getAttribute('href');
+					}
+				}
+			}
+	
+			#######################################################################
+			*/
+
+		}
+	}
+	var_dump($inboundlink2);
+
 
 	
 }
@@ -93,6 +189,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 
 	if ($website1Err == "" && $website2Err == "") {
+		if (substr($website1, 0, 4) != "http") { 
+			$website1 = "http://". $website1; 
+		}
+		if (substr($website2, 0, 4) != "http") { 
+			$website2 = "http://". $website2; 
+		}
+		
 		findAndCompare($website1, $website2);
 	} 
 
