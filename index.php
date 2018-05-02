@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Instilla - test app</title>
   <meta charset="utf-8">
 	<style>
   
@@ -44,12 +44,30 @@ function test_input($data) {
 }
 
 function findAndCompare($url1, $url2) {
- 	echo "qui faccio le elaborazioni!";	
-	echo "<h2>Your Input:</h2>";
-	echo $url1;
-	echo "<br>";
-	echo $url2;
-	echo "<br>";
+	
+	
+#	$url1 = 'My long <a href="http://example.com/abc" rel="link">string</a> has any
+#		<a href="/local/path" title="with attributes">number</a> of
+#		<a href="#anchor" data-attr="lots">links</a>.';
+
+#	$url1 = "https://". $url1;
+ #	echo $url1;
+#	echo "<br>";
+#	echo $url2;
+#	echo "<br>----------------<br>";
+
+	$url1 = file_get_contents("https://".$url1);
+	
+	$dom = new DomDocument();
+	$dom->loadHTML($url1);
+	$output = array();
+	foreach ($dom->getElementsByTagName('a') as $item) {
+	   $output[] = $item->getAttribute('href');#,
+	}
+	var_dump($output);
+#	var_dump($dom);
+
+	
 }
 
 
