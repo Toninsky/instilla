@@ -3,7 +3,28 @@
 <head>
   <title>Bootstrap Example</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="style/style.css">
+	<style>
+  
+		body{
+			font-family:Verdana, Geneva, sans-serif;
+			font-size:13px;
+			margin:12px;
+		}	
+	
+		h1 {
+			font-size:18px;
+			font-weight:bold;
+			color:#0366d6;
+		}
+	
+		h2 {
+			font-size:15px;
+			font-weight:bold;
+		}
+		
+		.error {color: #FF0000;}
+	  
+	</style>
 </head>
 <body>
 <h1>Instilla - test app</h1>
