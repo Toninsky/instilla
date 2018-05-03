@@ -22,6 +22,12 @@
 			font-weight:bold;
 		}
 		
+		.message {
+			font-style:italic;
+			margin-top:24px;
+			color:#0366d6;
+		}
+		
 		.error {color: #FF0000;}
 	  
 	</style>
@@ -185,9 +191,15 @@ function findAndCompare($url1, $url2) {
 		fwrite($myfile, $txt);
 	}
 	fclose($myfile);
-echo '<a href="comparison.csv" target="_blank">Open file</a><br>';
-
-
+	$filecsv = "comparison.csv";
+	#echo '<a href="comparison.csv" target="_blank">Open file</a><br>';
+/*
+	header("Cache-Control: public");
+	header("Content-Description: File Transfer");
+  	header("Content-Disposition: attachment; filename= " . $filecsv);
+	header("Content-Transfer-Encoding: binary");
+	readfile($filecsv);
+*/
 
 
 
@@ -247,6 +259,8 @@ if ($_SERVER["REQUEST_METHOD"] != "POST" || $website1Err != "" || $website2Err !
   <input type="submit" name="submit" value="Submit">  
 </form>
 <?php
+} else {
+	echo '<div class="message">Comparision file has been created: <a href="comparison.csv" target="_blank">Open it!</a></div>';
 }
 ?>
 </body>
