@@ -1,3 +1,23 @@
+<?php
+$modedownload = 0;
+if(isset($_REQUEST["dl"])){
+	$modedownload = 1;
+	$filecsv = "comparison.csv";
+	#echo '<a href="comparison.csv" target="_blank">Open file</a><br>';
+
+	header("Cache-Control: public");
+	header("Content-Description: File Transfer");
+  	#header("Content-Disposition: attachment; filename= " . $filecsv);
+	header("Content-Disposition: attachment; filename= " . $filecsv);
+	
+	header("Content-Transfer-Encoding: binary");
+	readfile($filecsv);
+	
+	
+	
+	
+} else {
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -260,8 +280,16 @@ if ($_SERVER["REQUEST_METHOD"] != "POST" || $website1Err != "" || $website2Err !
 </form>
 <?php
 } else {
-	echo '<div class="message">Comparision file has been created: <a href="comparison.csv" target="_blank">Open it!</a></div>';
+	echo '<div class="message">Comparision file has been downloaded.</div>
+		  <br />if you want to open a copy of the file: <a href="comparison.csv" target="_blank">click here</a>
+		  <br />otherwise you can make a new comparision <a href="index.php">clicking here</a>.
+		  <script>
+		  		window.location.href = "index.php?dl=1";
+		  </script>';
 }
 ?>
 </body>
 </html>
+<?php
+}
+?>	
