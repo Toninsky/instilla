@@ -44,11 +44,10 @@ function test_input($data) {
 }
 
 function findAndCompare($url1, $url2) {
-
     // first website
 	$domain1 = str_replace("https://","",str_replace("http://","",$url1));
-	echo $domain1;
-	echo "<br>----------------<br>";
+	#echo $domain1;
+	#echo "<br>----------------<br>";
 
 	// retrieve the href attributes within all the anchor tags
 	$page1 = file_get_contents($url1);
@@ -100,15 +99,17 @@ function findAndCompare($url1, $url2) {
 
 		}
 	}
-	var_dump($inboundlink1);
+	sort($inboundlink1);
+	#var_dump($inboundlink1);
+	
 
 
 
 	//  second website
 	$domain2 = str_replace("https://","",str_replace("http://","",$url2));
-	echo "<br>----------------<br>";
-	echo $domain2;
-	echo "<br>----------------<br>";
+	#echo "<br>----------------<br>";
+	#echo $domain2;
+	#echo "<br>----------------<br>";
 
 	// retrieve the href attributes within all the anchor tags
 	$page2 = file_get_contents($url2);
@@ -160,7 +161,34 @@ function findAndCompare($url1, $url2) {
 
 		}
 	}
-	var_dump($inboundlink2);
+	sort($inboundlink2);
+	#var_dump($inboundlink2);
+
+
+
+
+	// compare the arrays
+	$myfile = fopen("comparison.csv", "w") or die("Unable to open file!");
+	foreach ( $inboundlink1 as $value ) {
+		 $tempvalue = 0;
+		 $templabel = 0;
+		foreach ( $inboundlink2 as $value2 ) {
+			similar_text($value, $value2, $percent);
+			if ($percent > $tempvalue) {
+				$tempvalue = $percent;
+				$templabel = $value2;
+			}
+			
+		}
+		$txt = $value . ", " . $value2 . ", " . strval(number_format($percent,2)) . "%\n";
+		#echo $txt;
+		fwrite($myfile, $txt);
+	}
+	fclose($myfile);
+echo '<a href="comparison.csv" target="_blank">Open file</a><br>';
+
+
+
 
 
 	
