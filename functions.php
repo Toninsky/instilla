@@ -33,12 +33,22 @@ function compareAnchors($anchors1, $anchors2) {
 		$comparisonTable[] = [
 			"anchor1" => $anchor1,
 			"anchor2" => $templabel,
-			"percent" => $tempvalue
+			"percent" => strval(number_format($tempvalue,2)) . "%"
 		];
 	}
 	return $comparisonTable;
 }
 
 function downloadComparisonTable($comparisonTable) {
-	// TODO
+	$csvfile = "comparison.csv";
+	$file = fopen($csvfile, 'w');
+	foreach ($comparisonTable as $fields) {
+		fputcsv($file, $fields);
+	}
+	fclose($file);
+	header("Cache-Control: public");
+	header("Content-Description: File Transfer");
+	header("Content-Disposition: attachment; filename= " . $csvfile);
+	header("Content-Transfer-Encoding: binary");
+	readfile($csvfile);
 }
