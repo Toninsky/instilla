@@ -1,37 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Instilla - test app</title>
   <meta charset="utf-8">
-	<style>
-  
-		body{
-			font-family:Verdana, Geneva, sans-serif;
-			font-size:13px;
-			margin:12px;
-		}	
-	
-		h1 {
-			font-size:18px;
-			font-weight:bold;
-			color:#0366d6;
-		}
-	
-		h2 {
-			font-size:15px;
-			font-weight:bold;
-		}
-		
-		.message {
-			font-style:italic;
-			margin-top:24px;
-			color:#0366d6;
-		}
-		
-		.error {color: #FF0000;}
-	  
-	</style>
+  <link href="styles.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h1>Instilla - test app</h1>
