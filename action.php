@@ -8,5 +8,3 @@ $url1 = $_POST["website1"];
 $url2 = $_POST["website2"];
 $comparisonTable = findAndCompare($url1, $url2);
 downloadComparisonTable($comparisonTable);
-
-var_dump($comparisonTable);
